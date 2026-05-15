@@ -1,0 +1,45 @@
+name: Extract NoDMBot Source From Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      image:
+        description: "Docker image to extract"
+        required: true
+        default: "mahdibmrf/nodmbot:stable"
+
+jobs:
+  extract-source:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Pull Docker image
+        run: docker pull "${{ github.event.inputs.image }}"
+
+      - name: Create temporary container
+        run: docker create --name nodmbot_extract "${{ github.event.inputs.image }}"
+
+      - name: Extract source files
+        run: |
+          mkdir -p source-view
+          docker cp nodmbot_extract:/app/main.py source-view/main.py
+          docker cp nodmbot_extract:/app/requirements.txt source-view/requirements.txt
+          docker rm nodmbot_extract
+
+      - name: Show extracted files
+        run: |
+          echo "Extracted files:"
+          ls -la source-view
+
+      - name: Upload source artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NoDMBot-source-view
+          path: source-view/
+          retention-days: 7
