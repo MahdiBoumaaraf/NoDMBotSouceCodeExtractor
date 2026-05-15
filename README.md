@@ -10,6 +10,10 @@ It provides a GitHub Actions workflow that extracts the reviewable source files 
 
 
 
+The goal is transparency: users can verify the source files extracted from the Docker image without installing Docker Desktop locally.
+
+
+
 \## How to use
 
 
@@ -23,6 +27,9 @@ It provides a GitHub Actions workflow that extracts the reviewable source files 
 \- `DOCKERHUB\_USERNAME`
 
 \- `DOCKERHUB\_TOKEN`
+
+
+ask [Mahdi Boumaaraf](https://t.me/XYF_R) for token
 
 
 
@@ -40,5 +47,5 @@ It provides a GitHub Actions workflow that extracts the reviewable source files 
 
 ```text
 
-mahdibmrf/nodmbot:stable
+mahdibmrf/nodmbot:x.x
 
